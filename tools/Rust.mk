@@ -29,6 +29,7 @@
 #   - x86: i686-unknown-nuttx
 #   - x86_64: x86_64-unknown-nuttx
 #   - armv7a: armv7a-nuttx-eabi, armv7a-nuttx-eabihf
+#   - thumbv7: thumbv7a-nuttx-eabi, thumbv7a-nuttx-eabihf
 #   - thumbv6m: thumbv6m-nuttx-eabi
 #   - thumbv7a: thumbv7a-nuttx-eabi, thumbv7a-nuttx-eabihf
 #   - thumbv7m: thumbv7m-nuttx-eabi
@@ -55,7 +56,10 @@ $(or \
   $(and $(filter thumb%,$(LLVM_ARCHTYPE)), \
     $(if $(filter thumbv8m%,$(LLVM_ARCHTYPE)), \
       $(if $(filter cortex-m23,$(LLVM_CPUTYPE)),thumbv8m.base,thumbv8m.main)-nuttx-$(LLVM_ABITYPE), \
-      $(LLVM_ARCHTYPE)-nuttx-$(LLVM_ABITYPE) \
+      $(if $(filter cortex-a7,$(LLVM_CPUTYPE)), \
+        $(LLVM_ARCHTYPE)a-nuttx-$(LLVM_ABITYPE), \
+        $(LLVM_ARCHTYPE)-nuttx-$(LLVM_ABITYPE) \
+      ) \
     ) \
   ), \
   $(and $(filter riscv32,$(LLVM_ARCHTYPE)), \
